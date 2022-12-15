@@ -5,6 +5,7 @@
 # To Import a module the file must be present either in
 # current directory
 # pythonpath 
+# when a module is imported it will create a pyc file
 import function # imports all the function inside function module
 #from function import log #this will import only the log function from function.py
 
