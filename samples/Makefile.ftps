@@ -1,0 +1,71 @@
+all:validate ftps.o ftps
+	@echo "/usr/bin/make completed ftps at $$(/usr/bin/basename $$PWD)";
+validate:
+	@/usr/bin/ls -tr libBwood/libBwood.o libBwood/libBwood.cpp 2>&1 |\
+	/usr/bin/tail -1 2>&1 |\
+	/usr/bin/grep libBwood/libBwood.o >/dev/null 2>&1;\
+	Ret=$$?;\
+	if [[ 0 -ne $$Ret && -f libBwood/libBwood.o ]];\
+	then\
+		echo /usr/bin/rm libBwood/libBwood.o;\
+		/usr/bin/rm libBwood/libBwood.o;\
+	fi;\
+	if [[ 0 -ne $$Ret && -f libBwood/libBwood.so ]];\
+	then\
+		echo /usr/bin/rm libBwood/libBwood.so;\
+		/usr/bin/rm libBwood/libBwood.so;\
+	fi;\
+	/usr/bin/ls -tr ftps.o ftps.cpp 2>&1 |\
+	/usr/bin/tail -1 2>&1 |\
+	/usr/bin/grep ftps.o >/dev/null 2>&1;\
+	Ret=$$?;\
+	if [[ 0 -ne $$Ret && -f ftps.o ]];\
+	then\
+		echo /usr/bin/rm ftps.o;\
+		/usr/bin/rm ftps.o;\
+	fi;\
+	if [[ 0 -ne $$Ret && -f ftps ]];\
+	then\
+		echo /usr/bin/rm ftps;\
+		/usr/bin/rm ftps;\
+	fi
+ftps:libBwood/libBwood.o libBwood/libBwood.so
+	@echo "/usr/bin/g++ -g -Wall -L./libBwood -lBwood ftps.o -o $@";\
+	/usr/bin/g++ -g -Wall -L./libBwood -lBwood ftps.o -o $@
+%.o:%.cpp
+	@if [ ! -f $@ ];\
+	then\
+		echo "/usr/bin/g++ -fPIC -c -Wall $< -o $@";\
+		/usr/bin/g++ -fPIC -c -Wall $< -o $@;\
+	else\
+		/usr/bin/ls -tr $< $@ 2>&1 |\
+		/usr/bin/tail -1 2>&1 |\
+		/usr/bin/grep "$<" >/dev/null 2>&1;\
+		Ret=$$?;\
+		if [ 0 -eq $$Ret ];\
+		then\
+			echo "/usr/bin/make $@ is.01 up to date";\
+		else\
+			echo "/usr/bin/g++ -fPIC -c -Wall $< -o $@";\
+			/usr/bin/g++ -fPIC -c -Wall $< -o $@;\
+		fi;\
+	fi
+clean:
+	@UPTODATE="y";\
+	for files in ftps \
+	ftps.o \
+	libBwood/libBwood.so \
+	libBwood/libBwood.o;\
+	do\
+		if [ -f $$files ];\
+		then\
+			echo /usr/bin/rm $$files;\
+			/usr/bin/rm $$files;\
+			UPTODATE=$$?;\
+		fi;\
+	done;\
+	if [ "y" = "$$UPTODATE" ];\
+	then\
+		echo "/usr/bin/make $@ is.03 up to date";\
+	fi
+include libBwood/Makefile

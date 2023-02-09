@@ -31,9 +31,12 @@ int main(){
       nCount=15;
    }();
    cout<<"The modified values are "<<nLenght<<" and "<<nCount<<endl;
-   for_each(arr.begin(),arr.end(),[](int nVal){
+   for_each(arr.begin(),arr.end(),[&](int nVal){
          ++nVal;
          cout<<nVal<<"/t";
+         nCount=100;
+         nLenght=100;
    });
+   cout<<"The modified values are "<<nLenght<<" and "<<nCount<<endl;
    return 0;
 }
